@@ -1,0 +1,11 @@
+{
+  "name": "shooter",
+  "version": "0.0.1",
+  "description": "shooter",
+  "dependencies": {
+    "express": "^4.13.1",
+    "extend": "^3.0.0",
+    "less-middleware": "^2.0.1",
+    "socket.io": "^1.3.6"
+  }
+}

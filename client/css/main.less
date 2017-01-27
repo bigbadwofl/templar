@@ -1,0 +1,273 @@
+@gray: #454547;
+@black: #271b24;
+@white: #ddd;
+
+@font-face
+{
+    font-family: bitty;
+    src: url('../bitty.ttf');
+}
+
+* {
+	box-sizing: border-box;
+	font-family: bitty;
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	margin: 0px;
+	background-color: @black;
+}
+
+.layerCanvas {
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+
+	transform: translateZ(0) scale(4.0, 4.0);
+	transform-origin: 0px 0px;
+	-webkit-transform: translateZ(0) scale(4.0, 4.0);
+	-webkit-transform-origin: 0px 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+canvas[layer="lights"] {
+	mix-blend-mode: overlay;
+}
+
+canvas[layer="particles"] {
+	-webkit-filter: blur(0px);
+}
+
+canvas[layer="shadows"] {
+	-webkit-filter: blur(3.5px);
+	filter: blur(3.5px);
+}
+
+#canvas {
+}
+
+.ui-container {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100vw;
+	height: 100vh;
+	z-index: 9999;
+
+	> * {
+		position: absolute;
+	}
+
+}
+
+.loader {
+	position: absolute;
+	z-index: 99999;
+	left: 0px;
+	top: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: @black;
+
+	.inner {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 100%;
+		height: 10%;
+		transform: translate(-50%, -50%);
+
+		@gradientC1: rgb(91, 110, 225);
+		@gradientC2: rgb(95, 205, 228);
+
+		.heading {
+			text-align: center;
+			font-size: 48px;
+			font-family: bitty;
+			color: rgb(203, 219, 252);
+			margin-top: 30px;
+		}
+
+		@loaderSize: 25px;
+
+		.cssload-square {
+			margin: 0px auto;
+			width: @loaderSize;
+			height: @loaderSize;
+			transform: rotate(-45deg);
+				-o-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				-webkit-transform: rotate(-45deg);
+				-moz-transform: rotate(-45deg);
+		}
+
+		.cssload-square-part {
+			position: absolute;
+			width: @loaderSize;
+			height: @loaderSize;
+			z-index: 1;
+			animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+				-o-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+				-ms-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+				-webkit-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+				-moz-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+		}
+
+		.cssload-square-green {
+			background: rgb(95, 205, 228);
+			right: 0;
+			bottom: 0;
+			animation-direction: alternate-reverse;
+				-o-animation-direction: alternate-reverse;
+				-ms-animation-direction: alternate-reverse;
+				-webkit-animation-direction: alternate-reverse;
+				-moz-animation-direction: alternate-reverse;
+		}
+
+		.cssload-square-pink {
+			background: rgb(153, 229, 80);
+			left: 0;
+			top: 0;
+		}
+
+		.cssload-square-blend {
+			background: rgb(215, 123, 186);
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 2;
+			animation: blend-anim 0.92s ease-in infinite;
+				-o-animation: blend-anim 0.92s ease-in infinite;
+				-ms-animation: blend-anim 0.92s ease-in infinite;
+				-webkit-animation: blend-anim 0.92s ease-in infinite;
+				-moz-animation: blend-anim 0.92s ease-in infinite;
+		}
+
+		@keyframes blend-anim {
+			0% {
+				transform: scale(0.01, 0.01) rotateY(0);
+				animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			}
+			50% {
+				transform: scale(1, 1) rotateY(0);
+				animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+			}
+			100% {
+				transform: scale(0.01, 0.01) rotateY(0);
+			}
+		}
+
+		@-o-keyframes blend-anim {
+			0% {
+				-o-transform: scale(0.01, 0.01) rotateY(0);
+				-o-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			}
+			50% {
+				-o-transform: scale(1, 1) rotateY(0);
+				-o-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+			}
+			100% {
+				-o-transform: scale(0.01, 0.01) rotateY(0);
+			}
+		}
+
+		@-ms-keyframes blend-anim {
+			0% {
+				-ms-transform: scale(0.01, 0.01) rotateY(0);
+				-ms-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			}
+			50% {
+				-ms-transform: scale(1, 1) rotateY(0);
+				-ms-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+			}
+			100% {
+				-ms-transform: scale(0.01, 0.01) rotateY(0);
+			}
+		}
+
+		@-webkit-keyframes blend-anim {
+			0% {
+				-webkit-transform: scale(0.01, 0.01) rotateY(0);
+				-webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			}
+			50% {
+				-webkit-transform: scale(1, 1) rotateY(0);
+				-webkit-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+			}
+			100% {
+				-webkit-transform: scale(0.01, 0.01) rotateY(0);
+			}
+		}
+
+		@-moz-keyframes blend-anim {
+			0% {
+				-moz-transform: scale(0.01, 0.01) rotateY(0);
+				-moz-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+			}
+			50% {
+				-moz-transform: scale(1, 1) rotateY(0);
+				-moz-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+			}
+			100% {
+				-moz-transform: scale(0.01, 0.01) rotateY(0);
+			}
+		}
+
+		@keyframes cssload-part-anim {
+			0% {
+				transform: translate3d(-10px, -10px, 0);
+			}
+			100% {
+				transform: translate3d(10px, 10px, 0);
+			}
+		}
+
+		@-o-keyframes cssload-part-anim {
+			0% {
+				-o-transform: translate3d(-10px, -10px, 0);
+			}
+			100% {
+				-o-transform: translate3d(10px, 10px, 0);
+			}
+		}
+
+		@-ms-keyframes cssload-part-anim {
+			0% {
+				-ms-transform: translate3d(-10px, -10px, 0);
+			}
+			100% {
+				-ms-transform: translate3d(10px, 10px, 0);
+			}
+		}
+
+		@-webkit-keyframes cssload-part-anim {
+			0% {
+				-webkit-transform: translate3d(-10px, -10px, 0);
+			}
+			100% {
+				-webkit-transform: translate3d(10px, 10px, 0);
+			}
+		}
+
+		@-moz-keyframes cssload-part-anim {
+			0% {
+				-moz-transform: translate3d(-10px, -10px, 0);
+			}
+			100% {
+				-moz-transform: translate3d(10px, 10px, 0);
+			}
+		}
+	}
+
+}
