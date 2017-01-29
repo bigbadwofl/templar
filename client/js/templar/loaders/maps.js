@@ -68,7 +68,7 @@ define([
 				i--;
 			}
 		},
-		buildObjects: function(map, layer) {
+		buildObjects: function(map, layer, walkability, triggers) {
 			var list = layer.objects;
 
 			for (var i = 0; i < list.length; i++) {
@@ -98,6 +98,19 @@ define([
 					fixed: true
 				});
 
+				o.addComponent('path');
+				o.addComponent('collider', {
+					trigger: true,
+					offset: {
+						x: 6,
+						y: 6
+					},
+					size: {
+						x: 0.3,
+						y: 0.3
+					}
+				});
+
 				o.addComponent('transform', {
 					position: {
 						x: l.x,
@@ -108,9 +121,24 @@ define([
 						y: 16
 					}
 				});
+
+				walkability[~~(l.x / 16)][~~((l.y - 16) / 16)] = true;
+
+				o.addComponent('trigger', {
+					affectCoordinates: l.properties.trigger.split(',').map(function(m) {
+						var s = m.split('.');
+						return {
+							x: ~~s[0],
+							y: ~~s[1]
+						};
+					})
+				});
+
+				triggers.push(o);
 			}
 		},
-		build: function(name) {
+		build: function(level) {
+			var name = 'l' + level;
 			physics.enable(false);
 
 			this.clean();
@@ -118,6 +146,12 @@ define([
 				.css('opacity', 0);
 
 			var map = this.maps[name];
+			//if ((!map) || (level > 7)) {
+			if (!map) {
+				$('body').css('background-color', '#271b24');
+				events.fire('gameEnd');
+				return;
+			}
 
 			var w = map.width;
 			var h = map.height;
@@ -126,13 +160,15 @@ define([
 			var prefabArray = [];
 
 			var walkability = _.get2dArray(w, h);
+			var dotCount = 0;
+			var monsterCount = 0;
 			var triggers = [];
 
 			for (var i = 0; i < map.layers.length; i++) {
 				var layer = map.layers[i];
 
 				if (layer.name == 'triggers') {
-					this.buildObjects(map, layer);
+					this.buildObjects(map, layer, walkability, triggers);
 					continue;
 				}
 
@@ -189,6 +225,13 @@ define([
 								fixed: true
 							});
 
+							if (sheetName == 'walls') {
+								o.addComponent('collider', {
+									position: _.create(o.transform.position),
+									size: _.create(o.transform.size)
+								});
+							}
+
 							var child = o.getChild(0);
 							if (child) {
 								child.addComponent('renderer', {
@@ -205,8 +248,9 @@ define([
 									}
 								});
 							}
-						} else
+						} else {
 							o = objects.create(spriteName, null, null, noRender);
+						}
 
 						var transform = o.transform;
 						var tSize = transform.size;
@@ -225,21 +269,90 @@ define([
 							}
 						});
 
-						if (sheetName == 'walls')
-							o.addComponent('collider');
+						if (spriteName.indexOf('path') == 0) {
+							o.addComponent('path');
+							o.addComponent('collider', {
+								trigger: true
+							});
+
+							walkability[x][y] = true;
+						}
 
 						if ((layerName == 'tiles') || (layerName == 'bg'))
 							prefabArray.push(o);
 
-						if (o.name == 'player')
+						if (o.name == 'player') {
 							globals.register('player', o);
+							o.player.spawn = _.create(o.transform.position);
+						}
+
+						if (o.name.toLowerCase().indexOf('dot') > -1)
+							dotCount++;
+
+						if (o.name == 'pacman') {
+							monsterCount++;
+							o.pacman.spawn = _.create(o.transform.position);
+						}
+
+						globals.hud.html.dots = dotCount;
 
 						c++;
 					}
 				}
 			}
 
+			//remove trigger stuff
+			var removePrefabs = [];
+			triggers.forEach(function(o) {
+				var t = o.trigger;
+				var origin = o.transform.position;
+
+				t.affectCoordinates.forEach(function(c) {
+					var match = null;
+					for (var i = 0; i < prefabArray.length; i++) {
+						var m = prefabArray[i];
+						var pos = m.transform.position;
+						var same = (
+							(pos.x == (origin.x + (c.x * 16))) &&
+							(pos.y == (origin.y + (c.y * 16))) &&
+							(m.renderer.layer == 'tiles')
+						);
+						if (same) {
+							match = m;
+							removePrefabs.push(match);
+							break;
+						}
+					}
+
+					t.affects.push(match);
+				});
+			});
+
+			removePrefabs.forEach(function(r) {
+				for (var i = 0; i < prefabArray.length; i++) {
+					if (prefabArray[i] == r) {
+						prefabArray[i].addComponent('flickerer');
+						prefabArray.splice(i, 1);
+						i--;
+					}
+				}
+			});
+
+			//properties
+			var properties = map.properties;
+			var player = globals.player.player;
+			player.level = level;
+			player.time = ~~properties.time || 500;
+			player.maxTime = player.time;
+			player.updateHud();
+
 			$('body').css('background-color', '#271b24');
+
+			if (properties.female) {
+				player.female = 'f';
+				player.parent.animator.setState('fwalk');
+				$('body').css('background-color', '#5b6ee1');
+			}
 
 			optimizer.optimize(prefabArray);
 

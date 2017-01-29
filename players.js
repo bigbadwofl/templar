@@ -57,9 +57,6 @@ var players = {
 			return (p.socket.id == socket.id);
 		});
 
-		if (!player)
-			return;
-
 		player.id = this.nextId++;
 
 		msg.callback(player.id);

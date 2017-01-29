@@ -1,6 +1,11 @@
 require.config({
 	baseUrl: '../js/',
-	waitSeconds: 120,
+	waitSeconds: 100,
+	map: {
+		'*': {
+			'image': 'plugins/image.js'
+		}
+	},
 	paths: {
 		'socket': 'https://cdn.socket.io/socket.io-1.3.5',
 		'jquery': 'https://code.jquery.com/jquery-2.1.4.min',
@@ -22,10 +27,10 @@ require.config({
 			exports: '$'
 		},
 		'jMigrate': {
-			deps: ['jquery']
+			deps: [ 'jquery' ]
 		},
 		'game': {
-			deps: [
+			deps: [ 
 				'jquery',
 				'templar/vector2',
 				'templar/network'
@@ -40,10 +45,10 @@ require([
 	jquery
 ) {
 	window.audioCtx = typeof window.AudioContext === 'function' ?
-		new window.AudioContext() :
-		new window.webkitAudioContext()
+	                    new window.AudioContext() :
+	                    new window.webkitAudioContext()
 
-	require(['game'], function(game) {
+	require([ 'game' ], function(game) {
 		game.init();
 	});
 });

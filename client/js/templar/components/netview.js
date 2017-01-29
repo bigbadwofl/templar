@@ -7,10 +7,8 @@ define([
 ) {
 	return {
 		type: 'netview',
-
 		id: -1,
-		cd: 0,
-
+		spriteName: '',
 		init: function() {
 			this.enabled = false;
 
@@ -30,7 +28,6 @@ define([
 			network.register(this.parent, this.id);
 
 			var transform = this.parent.transform;
-			var renderer = this.parent.renderer;
 
 			this.sync({
 				id: this.id,
@@ -41,20 +38,12 @@ define([
 				size: {
 					x: transform.size.x,
 					y: transform.size.y
-				},
-				spriteName: renderer.spriteName,
-				layer: renderer.layer
+				}
 			});
 		},
-		update: function() {
-			if (this.cd > 0)
-				this.cd--;
-		},
 		sync: function(syncObject) {
-			if (this.cd > 0)
+			if (!this.enabled)
 				return;
-
-			this.cd = 25;
 
 			client.request({
 				module: 'players',
@@ -63,29 +52,35 @@ define([
 			});
 		},
 		onMove: function(x, y) {
-			this.sync({
+			var syncObject = {
 				id: this.id,
 				position: {
 					x: x,
 					y: y
 				}
-			});
+			};
+
+			this.sync(syncObject);
 		},
 		onResize: function(w, h) {
-			this.sync({
+			var syncObject = {
 				id: this.id,
 				size: {
 					x: w,
 					y: h
 				}
-			});
+			};
+
+			this.sync(syncObject);
 		},
-		onSpriteChange: function(spriteName, layer) {
-			this.sync({
+		onSpriteChange: function(spriteName) {
+			var syncObject = {
 				id: this.id,
 				spriteName: spriteName,
-				layer: layer
-			});
+				layer: this.parent.renderer.layer
+			};
+
+			this.sync(syncObject);
 		}
 	};
 });

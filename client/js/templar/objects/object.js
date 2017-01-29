@@ -39,14 +39,6 @@ define([
 				return (c.type == type);
 			});
 		},
-		setEnabled: function(enabled) {
-			if (enabled)
-				this.event('onEnabled');
-			else
-				this.event('onDisabled');
-
-			this.enabled = enabled;
-		},
 		event: function() {
 			var args = [].slice.call(arguments, 0);
 
@@ -57,8 +49,6 @@ define([
 			var len = components.length;
 			for (var i = 0; i < len; i++) {
 				var c = components[i];
-				if (!c.enabled)
-					continue;
 
 				c[event] && c[event].apply(c, args);
 			}
@@ -78,9 +68,6 @@ define([
 			var len = this.components.length;
 			for (var i = 0; i < len; i++) {
 				var c = this.components[i];
-				if (!c.enabled)
-					continue;
-
 				if ((c.type == 'renderer') || (c.type == 'particles')) {
 					continue;
 				}

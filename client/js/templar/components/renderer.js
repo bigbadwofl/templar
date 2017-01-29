@@ -9,27 +9,24 @@ define([
 ) {
 	return {
 		type: 'renderer',
-
 		layer: null,
 		spriteName: null,
 		sprite: null,
 		opacity: 1,
 		order: -1,
+		enabled: true,
 		offset: _.create(vector2, 0, 0),
-
-		events: {
-			onMove: function() {
-				this.reorder();
-			},
-			onResize: function() {
-				this.reorder();
-			}
-		},
 		init: function() {
 			if (this.spriteName != null)
 				this.setSprite();
 
 			this.reorder();
+		},
+		enable: function(enabled) {
+			this.enabled = enabled;
+
+			if (!this.enabled)
+				objects.removeRenderer(this);
 		},
 		reorder: function() {
 			//hack for now
@@ -55,14 +52,15 @@ define([
 
 			name = name || this.spriteName;
 			this.spriteName = name;
+
+			this.parent.event('onSpriteChange', name);
 			
 			this.sprite = resources.loadImage(name);
-			if (this.sprite.layer)
-				this.layer = this.sprite.layer;
-
-			this.parent.event('onSpriteChange', name, this.layer);
 		},
 		update: function(transform) {
+			if (!this.enabled)
+				return;
+
 			var transform = this.parent.transform;
 			var position = transform.position;
 			var size = transform.size;
@@ -94,16 +92,16 @@ define([
 				);
 
 				//debug
-				/*var c = this.parent.collider;
+				var c = this.parent.collider;
 				if (c) {
-					canvas.setStroke(255, 255, 0, 1, this.layer);
-					canvas.strokeRect(x + c.offset.x, y + c.offset.y, ~~(size.x * c.size.x), ~~(size.y * c.size.y), this.layer);
-				}*/
-			} else {
+					//canvas.setStroke(255, 255, 0, 1, this.layer);
+					//canvas.strokeRect(x + c.offset.x, y + c.offset.y, ~~(size.x * c.size.x), ~~(size.y * c.size.y), this.layer);
+				}
+			} /*else {
 				//only used for shadows and the default color is already black
 				//canvas.setFill(0, 0, 0, 1, this.layer);
 				canvas.rect(x, y, size.x, size.y, this.layer);
-			}
+			}*/
 
 			if (this.opacity != 1) {
 				canvas.setAlpha(1, this.layer);

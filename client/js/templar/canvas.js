@@ -116,9 +116,6 @@ define([
 			this.layers[layer].ctx.strokeRect(x, y, w, h);
 		},
 		image: function(sprite, x, y, w, h, layer) {
-			if (!this.layers[layer])
-				console.log(layer);
-
 			var ctx = this.layers[layer].ctx;
 
 			var position = this.position;

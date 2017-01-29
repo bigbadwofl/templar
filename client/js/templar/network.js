@@ -17,7 +17,6 @@ define([
 			var o = this.objects[data.id];
 			if (!o) {
 				o = objects.create('sprite');
-				o.addComponent('interpolator');
 				this.objects[data.id] = o;
 				o.renderer.enabled = false;
 			}
@@ -33,7 +32,6 @@ define([
 						data.position.x,
 						data.position.y
 					);
-					o.event('onSyncPosition', data.position.x, data.position.y);
 				}
 
 				if (data.size) {

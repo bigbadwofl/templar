@@ -17,7 +17,7 @@ define([
 					return;
 
 				if (renderer.fixed) {
-					objects.removeRenderer(renderer);
+					renderer.enable(false);
 
 					var layerName = renderer.layer || 'def';
 					var layer = layers[layerName] || (layers[layerName] = []);
@@ -35,8 +35,6 @@ define([
 			}
 		},
 		packLayer: function(name, prefabs) {
-			$('canvas.temp:not(.sprite)').remove();
-
 			//create temporary canvas
 			var canvas = $('<canvas class="temp"></canvas>')
 				.appendTo('body')
@@ -83,7 +81,7 @@ define([
 			});
 
 			//grab texture
-			//var texture = canvas[0].toDataURL();
+			var texture = canvas[0].toDataURL();
 
 			//create new prefab
 			var layer = objects.create('sprite', null, {
@@ -106,7 +104,7 @@ define([
 			renderer.sprite = {
 				image: new Image()
 			};
-			renderer.sprite.image = canvas[0];
+			renderer.sprite.image.src = texture;
 			renderer.layer = name;
 
 			//clean up

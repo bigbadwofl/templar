@@ -5,10 +5,8 @@ define([
 ) {
 	return {
 		type: 'transform',
-
 		position: _.create(vector2),
 		size: _.create(vector2),
-		
 		init: function() {
 			var position = this.position;
 			var size = this.size;
@@ -22,6 +20,8 @@ define([
 				this.resize(size.x, size.y);
 				this.parent.event('onResize', size.x, size.y);
 			}
+
+			this.parent.renderer && this.parent.renderer.reorder();
 		},
 		move: function(x, y) {
 			var position = this.position;
@@ -42,6 +42,8 @@ define([
 				position.x = x;
 				position.y = y;
 
+				this.parent.renderer && this.parent.renderer.reorder();
+
 				this.parent.event('onMove', x, y, dx, dy);
 			}
 		},
@@ -60,6 +62,8 @@ define([
 			if ((wChanged) || (hChanged)) {
 				size.x = w;
 				size.y = h;
+
+				this.parent.renderer && this.parent.renderer.reorder();
 
 				this.parent.event('onResize', w, h);
 			}

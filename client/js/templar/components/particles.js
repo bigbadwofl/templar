@@ -2,7 +2,8 @@ define([
 	'templar/canvas',
 	'jMigrate'
 ], function(
-	canvas
+	canvas,
+	jMigrate
 ) {
 	var particleTemplate = {
 		x: 0,
@@ -18,10 +19,11 @@ define([
 
 	return {
 		type: 'particles',
-
 		particles: [],
+
 		xOffset: [8, 0, 0],
 		yOffset: [2, 3, -2],
+
 		vX: [0.3, 0.16],
 		vY: [0.2, 0.2],
 		ttl: [5, 30],
@@ -30,6 +32,7 @@ define([
 		b: [100, 140],
 		size: [1, 2],
 		burst: [2, 0],
+
 		ctx: null,
 
 		init: function() {
@@ -103,6 +106,13 @@ define([
 
 				ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a + ')';
 				fillRect.call(ctx, p.x, p.y, p.size, p.size);
+			}
+
+			//debug
+			var c = this.parent.collider;
+			if (c) {
+				//ctx.strokeStyle = 'rgb(255, 0, 255)';
+				//ctx.strokeRect(position.x + c.offset.x, position.y + c.offset.y, ~~(size.x * c.size.x), ~~(size.y * c.size.y));
 			}
 		}
 	};

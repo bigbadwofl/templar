@@ -1,0 +1,132 @@
+@white: #cbdbfc;
+
+.uiHelp {
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	color: @white;
+	text-align: center;
+	width: 600px;
+	font-size: 28px;
+
+	.heading {
+		width: 100%;
+		color: #5fcde4;
+		font-size: 48px;
+		margin-bottom: 30px;
+	}
+
+	.legend {
+		width: calc(50% - 10px);
+		float: left;
+		margin-right: 10px;
+		border-radius: 15px;
+		overflow: hidden;
+
+		.row {
+			width: 100%;
+			height: 74px;
+			position: relative;
+			background-color: rgba(255, 255, 255, 0.1);			
+
+			&:nth-child(2n + 1) {
+				background-color: rgba(255, 255, 255, 0.2);
+			}
+
+			.left {
+				width: 74px;
+				height: 74px;
+				float: left;
+				background-color: rgba(255, 255, 255, 0.1);
+				background-position: 5px 5px;
+				background-repeat: no-repeat;
+			}
+
+			.right {
+				width: calc(100% - 74px);
+				position: absolute;
+				left: 74px;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			&:nth-child(1) .left {
+				background-image: url("../../../../images/tileset_16.png");
+			}
+
+			&:nth-child(2) .left {
+				background-image: url("../../../../images/tileset_26.png");
+			}
+
+			&:nth-child(3) .left {
+				background-image: url("../../../../images/tileset_09.png");
+			}
+
+			&:nth-child(4) .left {
+				background-image: url("../../../../images/tileset_22.png");
+			}
+			
+			&:nth-child(5) .left {
+				background-image: url("../../../../images/tileset_00.png");
+			}
+
+			&:nth-child(6) .left {
+				background-image: url("../../../../images/tileset_58.png");
+			}
+
+		}
+
+	}
+
+	.keys {
+		width: calc(50% - 10px);
+		float: left;
+		margin-left: 10px;
+		border-radius: 15px;
+		overflow: hidden;
+
+		.row {
+			width: 100%;
+			height: 74px;
+			position: relative;
+			background-color: rgba(255, 255, 255, 0.1);
+
+			&:nth-child(2n + 1) {
+				background-color: rgba(255, 255, 255, 0.2);
+			}
+
+			.left {
+				height: 100%;
+				width: 50%;
+				background-color: rgba(255, 255, 255, 0.1);
+				position: relative;
+
+				.inner {
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					transform: translate(-50%, -50%);
+				}
+			}
+
+			.right {
+				width: 50%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+		}
+
+	}
+
+	.bottom {
+		width: 100%;
+		font-size: 24px;
+		height: 20px;
+		margin-top: 20px;
+		float: left;
+	}
+
+}

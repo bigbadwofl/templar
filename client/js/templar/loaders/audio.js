@@ -10,7 +10,7 @@ define([
 		clips: {},
 		loading: [],
 		playing: [],
-		isMuted: true,
+		isMuted: false,
 		init: function() {
 			window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			this.ctx = new AudioContext();

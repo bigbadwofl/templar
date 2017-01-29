@@ -5,13 +5,11 @@ define([
 ) {
 	return {
 		type: 'lightFlickerer',
-
 		origin: null,
 		options: {
 			flickerSpeed: 0.6,
 			flickerChance: 25
 		},
-		
 		methods: {
 			init: function() {
 				this.origin = _.create(this.parent.transform.position);

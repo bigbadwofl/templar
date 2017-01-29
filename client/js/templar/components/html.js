@@ -1,14 +1,15 @@
 define([
-	'templar/loaders/snippets'
+	'templar/loaders/snippets',
+	'templar/loaders/audio'
 ], function(
-	snippets
+	snippets,
+	audio
 ) {
 	return {
 		type: 'html',
-
 		html: null,
 		el: null,
-		
+		visible: true,
 		init: function() {
 			if (this.html) {
 				var snippet = snippets.getSnippet(this.html);
@@ -23,21 +24,15 @@ define([
 			}
 		},
 		setVisible: function(visible) {
-			if (visible) {
-				this.el
-					.removeClass('hidden')
-					.fadeIn('fast');
-			}
-			else {
-				this.el
-					.addClass('hidden')
-					.fadeOut('fast');
-			}
+			this.visible = visible;
 
-			this.enabled = visible;
+			if (visible)
+				this.el.fadeIn('fast');
+			else
+				this.el.fadeOut('fast');
 		},
-		isVisible: function() {
-			return (!this.el.hasClass('hidden'));
+		click: function() {
+			audio.play('pickup0', false, false, 0.5);
 		},
 		onMove: function(x, y) {
 			if (!this.el)

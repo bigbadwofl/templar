@@ -5,14 +5,15 @@ define([
 ) {
 	return {
 		type: 'animator',
-
-		states: {},
-		state: null,
+		states: {
+			idle: [ 'player' ],
+			walk: [ 'player', 'playerMov', 'playerMov2' ]
+		},
+		state: 'walk',
 		nextState: null,
 		time: 0,
 		speed: 16,
 		cd: 0,
-		
 		setState: function(state) {
 			if (this.state == state)
 				return;

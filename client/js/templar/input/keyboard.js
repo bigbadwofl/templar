@@ -17,10 +17,10 @@ define([
 		reset: function() {
 			this.keys = [];
 		},
-		isDown: function(key, noConsume) {
+		isDown: function(key, consume) {
 			var index = this.keys.indexOf(key);
 			if (index > -1) {
-				if (!noConsume)
+				if (consume)
 					this.keys.splice(index, 1);
 
 				return true;

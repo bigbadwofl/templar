@@ -238,9 +238,6 @@ define([
 			var len = r.length;
 			for (var i = 0; i < len; i++) {
 				var c = r[i];
-				if (!c.enabled)
-					continue;
-				
 				c.update();
 			}
 

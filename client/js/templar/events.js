@@ -49,9 +49,6 @@ define([
 			var len = list.length
 			for (var i = 0; i < len; i++) {
 				var l = list[i];
-				if ((l.enabled != null) && (!l.enabled))
-					continue;
-				
 				l.method.apply(l.scope, args);
 			}
 		},

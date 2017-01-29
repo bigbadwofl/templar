@@ -58,7 +58,7 @@ define([
 				var y = options.pad + (i * (options.size + options.pad));
 
 				for (var j = 0; j < row.length; j++) {
-					var tempCanvas = $('<canvas class="sprite temp"></canvas>')
+					var tempCanvas = $('<canvas class="temp"></canvas>')
 						.appendTo('body')
 						.css('display', 'none');
 					var tempCtx = tempCanvas[0].getContext('2d');
@@ -78,15 +78,11 @@ define([
 
 					tempCtx.drawImage(sprite.image, x, y, options.size, options.size, 0, 0, options.size, options.size);
 
+					//newSprite.image.src = tempCanvas[0].toDataURL();
 					newSprite.image = tempCanvas[0];
 
 					if (sprite.sheet.layerMap)
 						newSprite.layer = sprite.sheet.layerMap[i][j];
-					else if (sprite.sheet.layer)
-						newSprite.layer = sprite.sheet.layer;
-
-					if (sprite.sheet.options.outline)
-						this.outline(tempCanvas[0]);
 
 					sprite.sheet.mapping['_' + c] = row[j];
 
@@ -96,69 +92,6 @@ define([
 
 			canvas.remove();
 		},
-		outline: function(canvas) {
-			var w = canvas.width;
-			var h = canvas.height;
-
-			var ctx = canvas.getContext('2d');
-
-			var data = ctx.getImageData(0, 0, w, h);
-			var pixels = data.data;
-
-			var newData = ctx.createImageData(w, h);
-			var newPixels = newData.data;
-
-			var c = 0;
-			var index = 0;
-			var prevRow = (w * 4);
-			for (var i = 0; i < w; i++) {
-				for (var j = 0; j < h; j++) {
-					var d = pixels[c + 3];
-
-					newPixels[c] = pixels[c];
-					newPixels[c + 1] = pixels[c + 1];
-					newPixels[c + 2] = pixels[c + 2];
-					newPixels[c + 3] = pixels[c + 3];
-
-					if (d != 0) {
-						c += 4;
-						continue;
-					}
-
-					var drawOutline = false;
-
-					if ((i > 0) && (pixels[c + 7])) {
-						index = c + 4;
-						drawOutline = true;
-					}
-					else if ((i < w - 1) && (pixels[c - 1] > 0)) {
-						index = c - 4;
-						drawOutline = true;
-					}
-					else if ((j < h - 1) && (pixels[c + prevRow + 3])) {
-						index = c + prevRow;
-						drawOutline = true;
-					}
-
-					if (drawOutline) {
-						var r = pixels[index];
-						var g = pixels[index + 1];
-						var b = pixels[index + 2];
-
-						newPixels[c] = ~~(r * 0.15);
-						newPixels[c + 1] = ~~(g * 0.15);
-						newPixels[c + 2] = ~~(b * 0.15);		
-
-						newPixels[c + 3] = 125;
-					}
-
-					c += 4;
-				}
-			}
-
-			ctx.putImageData(newData, 0, 0);
-		},
-
 		/*onSprite: function(sprite) {
 			//create temporary canvas
 			var canvas = $('<canvas></canvas>')

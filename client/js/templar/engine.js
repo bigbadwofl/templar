@@ -5,6 +5,7 @@ define([
 	'templar/loaders/maps',
 	'templar/physics/physics',
 	'templar/loaders/snippets',
+	'templar/loaders/audio',
 	'templar/globals'
 ], function(
 	objects,
@@ -13,6 +14,7 @@ define([
 	maps,
 	physics,
 	snippets,
+	audio,
 	globals
 ) {
 	return {
@@ -23,7 +25,8 @@ define([
 			'spritesheets',
 			'maps',
 			'physics',
-			'snippets'
+			'snippets',
+			'audio'
 		],
 		init: function(readyScope, readyMethod) {
 			events.addListener('ready', readyScope, readyMethod);

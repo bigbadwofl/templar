@@ -5,13 +5,15 @@ define([
 ) {
 	return {
 		type: 'bobber',
-
 		state: 0,
 		stateMax: 16,
 		frequency: 5,
 		amplitude: 1,
-		
+		enabled: true,
 		beforeUpdate: function() {
+			if (!this.enabled)
+				return;
+
 			this.state++;
 			if (this.state == this.stateMax)
 				this.state = this.stateMax;

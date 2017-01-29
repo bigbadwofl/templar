@@ -7,7 +7,7 @@ define([
 ) {
 	return {
 		type: 'hud',
-		base: 'clickHtml',
+		base: 'ui',
 		components: {
 			html: {
 				html: 'hud',

@@ -5,7 +5,7 @@ define([
 ) {
 	return {
 		type: 'player',
-		base: 'shadowSprite',
+		base: 'sprite',
 		components: {
 			renderer: {
 				spriteName: 'player',
@@ -25,12 +25,27 @@ define([
 			player: {},
 			collider: {
 				fixed: false,
-				trigger: false
+				offset: {
+					x: 3,
+					y: 3
+				},
+				size: {
+					x: 0.65,
+					y: 0.65
+				}
 			},
-			camera: {
-				center: true
+			animator: {
+				speed: 8,
+				states: {
+					walk: [ 'player', 'playerMov', 'playerMov2' ],
+					evilwalk: [ 'playerevil', 'playerevil2', 'playerevil3', 'playerevil2' ],
+					fevilwalk: [ 'fplayerevil', 'fplayerevil2', 'fplayerevil3', 'fplayerevil2' ],
+					fwalk: [ 'fplayer', 'fplayerMov', 'fplayerMov2' ]
+				}
 			},
-			netview: {}
+			flickerer: {},
+			camera: {},
+			bobber: {}
 		}
 	};
 });
